@@ -1,0 +1,17 @@
+#include "meta.h"
+#include "draw.h"
+
+#include <stdlib.h>
+#include <SDL2/SDL.h>
+#include <time.h>
+
+int main(int argc, char ** strargs)
+{
+  srand(time(NULL));
+  sdlinit();
+  unsigned components_size = 36;
+  struct component* components[36];
+  simulated_annealing(components, components_size);
+  SDL_Quit();
+  return EXIT_SUCCESS;
+}
