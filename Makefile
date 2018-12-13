@@ -1,5 +1,5 @@
 CFLAGS=-O3 -Wall -Werror -pedantic -g $(shell sdl2-config --cflags)
-LDFLAGS=-lSDL2 -lm
+LDFLAGS=-lSDL2 -lSDL2_ttf -lm
 EXEC=simulated_annealing
 OBJS=meta.o simulated_annealing.o draw.o
 
