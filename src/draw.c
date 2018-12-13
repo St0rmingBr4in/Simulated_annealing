@@ -1,5 +1,4 @@
 #include "draw.h"
-
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 
@@ -59,11 +58,27 @@ SDL_Rect camera()
   return res;
 }
 
-void draw(SDL_Rect *camera)
+void draw(struct component components[36])
 {
-  SDL_SetRenderTarget(get_renderer(), get_rendertarget());
-
-  SDL_RenderPresent(get_renderer());
+  SDL_Rect blocs[36];
+  SDL_Renderer* renderer = get_renderer();
+  //Set background to white
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+  //Clear window
+  SDL_RenderClear(renderer);
+  //Set bloc to grey
+  SDL_SetRenderDrawColor(renderer, 150, 150, 150, 255);
+  for(unsigned i = 0; i < 36; i++)
+  {
+	  blocs[i].w = SCREEN_HEIGHT/6 - 10;
+	  blocs[i].h = SCREEN_HEIGHT/6 - 10;
+	  blocs[i].x = components[i].posx * (SCREEN_HEIGHT/6);
+	  blocs[i].y = components[i].posy * (SCREEN_HEIGHT/6);
+	  SDL_RenderFillRect(renderer, &blocs[i]);
+  }
+  SDL_SetRenderTarget(renderer, get_rendertarget());
+  SDL_RenderPresent(renderer);
+  SDL_Delay(1000);
 }
 
 
