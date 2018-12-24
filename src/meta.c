@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 
+#include "draw.h"
 #include "meta.h"
 
 unsigned manahtan_dist(unsigned xa, unsigned ya, unsigned xb, unsigned yb)
@@ -12,7 +13,8 @@ unsigned comp_man_dist(struct component cmpt)
 {
   unsigned ret = 0;
   for(unsigned i = 0; i < cmpt.links_nb; i++)
-    ret += manahtan_dist(cmpt.posx, cmpt.posy, cmpt.components[i]->posx, cmpt.components[i]->posy);
+	 // printf("i: %u, x: %u, y: %u, x: %u, y: %u\n", i, cmpt.posx, cmpt.posy, cmpt.components[i]->posx, cmpt.components[i]->posy);
+	  ret += manahtan_dist(cmpt.posx, cmpt.posy, cmpt.components[i]->posx, cmpt.components[i]->posy);
   return ret;
 }
 
@@ -33,6 +35,7 @@ int aggregated_comp_man_dist(struct component components[], unsigned components_
 {
   unsigned dist = 0;
   for(unsigned i = 0; i < components_size; i++)
+    //printf("dist: %u, i: %u\n", dist, i);
     dist += comp_man_dist(components[i]);
   return dist;
 }
@@ -66,39 +69,57 @@ double get_initial_temperature(double temp, unsigned delta_e)
 	return -delta_e/log(temp);
 }
 
-void simulated_annealing(struct component components[], unsigned components_size, unsigned temp, unsigned temp_step)
+void simulated_annealing(struct component components[], unsigned components_size, unsigned max_iteration, double temp, double temp_step, unsigned energy_target)
 {
-  unsigned max_iter = 123;
-  unsigned min_energy = 200;
-  unsigned energy = 700;
-  unsigned iter = 0;
-  unsigned prev_dist = 50000;
-  //SDL_Surface *box_arr[components_size];
+	unsigned iter_total = 0;
+	unsigned iter_accept = 0;
+	unsigned prev_dist = 50000;
+	unsigned energy = energy_target + 1;
+	unsigned delta_e = get_delta_e(components, components_size);
+	
+	unsigned fixed = 0;
+	unsigned old_energy = energy_target;
 
-  unsigned delta_e = get_delta_e(components, components_size);
-  temp = get_initial_temperature(temp, temp_step);
+	while(iter_total < max_iteration && energy > energy_target)
+	{
+		energy = aggregated_comp_man_dist(components, components_size);
+		printf("Iter total: %u, iter accept: %u, temp: %f, energy: %u\n", iter_total, iter_accept, temp, energy);
+		unsigned pos1 = rand() % components_size;
+		unsigned pos2 = rand() % components_size;
 
-  while(iter < max_iter && energy > min_energy)
-  {
+		if(pos1 != pos2)
+		{
+			swap(&components[pos1], &components[pos2]);
 
-    unsigned pos1 = rand() % components_size;
-    unsigned pos2 = rand() % components_size;
+			int new_dist = aggregated_comp_man_dist(components, components_size);
 
-    if(pos1 != pos2)
-    {
-      swap(&components[pos1], &components[pos2]);
+			if(new_dist > prev_dist || !proba(delta_e, temp))
+				swap(&components[pos1], &components[pos2]);
+			else
+			{
+				prev_dist = new_dist;
+				iter_accept++;
+				fixed = 0;
+			}
 
-      int new_dist = aggregated_comp_man_dist(components, components_size);
+			iter_total++;
 
-      if(new_dist > prev_dist || !proba(delta_e, temp))
-        swap(&components[pos1], &components[pos2]);
+			if(iter_total >= 1000 * components_size && iter_accept >= 12 * components_size)
+			{
+				if(fixed == 0)
+					old_energy = energy;
+				
+				if(energy == old_energy)
+					fixed++;
 
-      prev_dist = new_dist;
+				if(fixed == 3)
+					break;
 
-      iter++;
-      temp -= temp_step;
-    }
-  }
+				temp -= temp_step;
+
+			}
+		}
+	}
 }
 
 
