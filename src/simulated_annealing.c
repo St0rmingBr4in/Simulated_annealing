@@ -76,7 +76,7 @@ void fillAndShuffle(struct component components[])
 		}
 	for(unsigned i = 0; i < 1000; i++)
 		swap(&components[rand() % 36], &components[rand() % 36]);
-	draw(components);
+//	draw(components);
 }
 
 
