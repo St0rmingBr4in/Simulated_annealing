@@ -1,8 +1,8 @@
-#include "draw.h"
-#include <stdlib.h>
+#include "draw.hh"
+#include <cstdlib>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include <stdio.h>
+#include <cstdio>
 
 SDL_Window* get_screen(void)
 {

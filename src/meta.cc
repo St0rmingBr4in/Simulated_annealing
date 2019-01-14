@@ -1,8 +1,8 @@
-#include <stdlib.h>
+#include <cstdlib>
 #include <SDL2/SDL.h>
 
-#include "draw.h"
-#include "meta.h"
+#include "draw.hh"
+#include "meta.hh"
 
 unsigned manahtan_dist(int xa, int ya, int xb, int yb)
 {

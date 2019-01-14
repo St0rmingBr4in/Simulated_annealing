@@ -1,6 +1,6 @@
 #pragma once
 
-#include "meta.h"
+#include "meta.hh"
 #include <SDL2/SDL.h>
 
 #define SCREEN_HEIGHT 480

@@ -1,5 +1,5 @@
-#include "meta.h"
-#include "draw.h"
+#include "meta.hh"
+#include "draw.hh"
 
 #include <stdlib.h>
 #include <SDL2/SDL.h>
