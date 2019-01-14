@@ -61,12 +61,13 @@
 
 \setlength{\parskip}{1em}
 
+\usepackage{tikz}
 
 \begin{document}
 
 \pagenumbering{gobble}
 
-\input{page_de_garde}
+\input{tex/page_de_garde}
 
 \large
 \renewcommand*\contentsname{\Large Sommaire}
@@ -82,11 +83,18 @@
 \setlength\emergencystretch{.5\textwidth}
 
 
-\input{introduction}
-\input{travail}
-\input{conclusion}
-\input{glossaire}
-\input{docs}
-\input{annexes}
+\input{tex/introduction}
+\input{tex/travail}
+\input{tex/conclusion}
+\input{tex/glossaire}
+\input{tex/docs}
+\input{tex/annexes}
+
+\begin{figure}
+\input{tex/generated.eepic}
+\caption{Do not forget!
+Make it explicit enough that readers
+can figure out what you are doing.}
+\end{figure}
 
 \end{document}

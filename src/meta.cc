@@ -73,7 +73,7 @@ void simulated_annealing(struct component components[], unsigned components_size
 {
   unsigned iter_total = 0;
   unsigned iter_accept = 0;
-  unsigned prev_dist = 50000;
+  int prev_dist = 50000;
   unsigned energy = energy_target + 1;
   unsigned delta_e = get_delta_e(components, components_size);
 
@@ -83,7 +83,7 @@ void simulated_annealing(struct component components[], unsigned components_size
   while(iter_total < max_iteration && energy > energy_target)
   {
     energy = aggregated_comp_man_dist(components, components_size);
-    printf("Iter total: %u, iter accept: %u, temp: %f, energy: %u\n", iter_total, iter_accept, temp, energy);
+    //printf("Iter total: %u, iter accept: %u, temp: %f, energy: %u\n", iter_total, iter_accept, temp, energy);
     unsigned pos1 = rand() % components_size;
     unsigned pos2 = rand() % components_size;
 

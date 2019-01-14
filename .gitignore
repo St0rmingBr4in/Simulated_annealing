@@ -10,3 +10,4 @@ simulated_annealing
 *.dvi
 *.sw?
 .fuse_hidden*
+*.eepic
