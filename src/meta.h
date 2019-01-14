@@ -8,7 +8,7 @@ struct component
   struct component* components[4];
 };
 
-unsigned manahtan_dist(unsigned xa, unsigned ya, unsigned xb, unsigned yb);
+unsigned manahtan_dist(int xa, int ya, int xb, int yb);
 unsigned comp_man_dist(struct component cmpt);
 void swap(struct component* cmpt1, struct component* cmpt2);
 int aggregated_comp_man_dist(struct component components[], unsigned components_size);

@@ -1,2 +1,12 @@
 *.o
 simulated_annealing
+*.log
+*.aux
+*.pdf
+*.toc
+*.out
+*.ptc
+*.eps
+*.dvi
+*.sw?
+.fuse_hidden*
