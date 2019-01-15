@@ -1,7 +1,125 @@
 \section{Travail effectué}
-\subsection{But Général}
-\subsection{Explication détaillée des résultats à obtenir}
-\subsection{Compte-rendu d’activité}
-\subsection{Interprétation et critique des résultats}
+
+\subsection{Choix de l'implémentation}
+
+Nous avons choisi d'implémenter ce projet à l'aide du langage C++ d'abord de part sa flexibilité mais aussi afin de pouvoir facilement réutiliser ces heuristiques dans d'autres projets.\\ \\
+Nous avons utilisé SDL2 pour la partie graphique de part sa vitesse d'exécution, pour avoir un rendu graphique au fur et à mesure que le programme s'éxecute et également afin de constituer les différents rendus graphiques.
+
+\subsection{Utilisation du projet}
+
+Pour pouvoir utiliser le projet il faut avoir les bibliothèques suivantes installées :
+\begin{itemize}
+    \item libsdl2
+    \item sdl2\_ttf
+    \item epix
+\end{itemize}
+
+Le projet contenant du replis simulé peut être téléchargé à cette adresse : \\ 
+\url{https://github.com/St0rmingBr4in/Simulated_annealing} \\ \\
+
+Le projet contenant de la recherche tabou est également disponible à cette adresse.
+\newpage
+
+
+\subsection{Algorithmes utilisés}
+\subsubsection{Recuit simulé}
+\paragraph{Principe}
+Le principe de cet algorithme est directement inspiré du principe de recuit en métallurgie.\\
+Il consiste a monter graduellement la température d'un métal jusqu'à atteindre une configuration moléculaire plus stable, qui correspond a un état d'énergie moindre du système, afin d'améliorer les propriétés d'un métal ou d'un alliage.\\
+Dans notre cas, cette énergie est la distance de manhattan de l'ensemble.
+A chaque itération de l'algorithme, la position de 2 composants sont échangés. Si cette solution améliore l'état du système nous l'acceptons d'office, sinon on peut l'accepter avec une probabilité dépendant à la fois d'un nombre aléatoire, d'une température prédéfinie ainsi que de la différence d'énergie a l'intérieur du système comparée à celle mesurée au début de l'algorithme. \\
+La variable contenant la température décroît en suivant une valeur prédéfinie.
+\newpage
+\paragraph{Pseudo-code}
+\noindent
+\begin{centering}
+
+
+\begin{lstlisting}
+tableau_de_composant; //Matrice de 6x6 contenant les composants
+delta_energie = get_delta_energie(tableau_de_composant);
+
+tant que (nombre_iteration_total < maximum_iteration ET energie > energie_cible faire)
+{
+	energie = distance_manhatan_total(tableau_de_composant);
+	composant1 = choix_aleatoire(tableau_de_composant);
+	composant2 = choix_aleatoire(tableau_de_composant);
+	
+	echange_position(composant1, composant2);
+	
+	energie2 = distance_manhatan_total(tableau_de_composant);
+	
+	si (energie2 > energie OU !proba(delta_e, temp)) alors
+	    //choix d'accepter ou pas la nouvelle disposition
+		echange_position(composant1, composant2);
+	sinon
+		energie = energie2;
+		
+		si systeme_fige() alors
+		    quitte();
+		sinon
+		    reduit(temperature);
+		fin si
+    fin si
+}
+\end{lstlisting}
+\end{centering}
+\newpage
+\subsubsection{Recherche tabou}
+\paragraph{Principe}
+
+Tabu Search (TS) est un algorithme métaheuristique qui peut être utilisé pour résoudre des problèmes d'optimisation combinatoire. Les problèmes d'optimisation combinatoire sont des problèmes dans lesquels une sélection ordonnée d'options optimales est souhaité. \\
+
+La recherche tabou utilise une liste de "Tabou" qui représentent les solution qui ne devront pas être continué d'être exploré par l'algorithme. En général il est possible de spécifier une taille maximum de solution marquées comme "Tabou". Au delà de cette taille la liste de Tabou se comportera comme une structure FIFO. \\
+
+La recherche tabou utilise une procédure de recherche locale ou de voisinage pour passer de manière itérative d'une solution potentielle à une autre solution légèrement meilleure. La recherche de voisinage est arrétée jusqu'à ce qu'un critère d'arrêt ait été satisfait. Ce critère est généralement une limite de tentative ou un seuil de score. \\
+
+Cette partie de l'algorithme (procédure de recherche locale) resterait bloquée dans les zones où les scores sont médiocres ou dans les zones où les scores se stabilisent si elle était utilisée seule. Afin d'éviter ceci et d'explorer l'espace de recherche qui seraient laissées inexplorées par d'autres procédures de recherche locales, la recherche tabou également le voisinage de chaque solution au fur et à mesure de l'avancement de la recherche. \\
+
+\newpage
+\noindent
+L'algorithme utilise 3 type de mémoire afin de se souvenir des solutions possibles:
+
+\begin{itemize}
+    \item Short-term: \\ 
+    
+    \indent     Représente la liste des solutions envisagées récemment. Si une solution apparaît dans la liste des tabous, elle ne peut être réexaminée tant qu'elle n'a pas atteint le point d'expiration. \\
+      
+    \item{Intermediate-term}
+    
+    Représente les règles dites "d'intensification", elles permettent d'orienter la recherche vers des zones prometteuses de l'espace de recherche.
+    
+    \item{Long-term}
+    
+    Représente les règles de diversification qui entraînent la recherche dans de nouvelles régions (c'est-à-dire concernant les réinitialisations lorsque la recherche est bloquée dans une impasse ou dans une impasse sous-optimale).
+\end{itemize}
+
+\newpage
+\paragraph{Pseudo-code}
+
+\centering
+
+\begin{lstlisting}
+sBest = s0
+bestCandidate = s0
+tabuList = []
+tabuList.push(s0)
+while (not stoppingCondition())
+	sNeighborhood = getNeighbors(bestCandidate)
+	for (sCandidate in sNeighborhood)
+		if ( (not tabuList.contains(sCandidate)) and (fitness(sCandidate) > fitness(bestCandidate)) )
+			bestCandidate = sCandidate
+		end
+	end
+	if (fitness(bestCandidate) > fitness(sBest))
+		sBest = bestCandidate
+	end
+	tabuList.push(bestCandidate)
+	if (tabuList.size > maxTabuSize)
+		tabuList.removeFirst()
+	end
+end
+return sBest
+\end{lstlisting}
 
 \newpage
