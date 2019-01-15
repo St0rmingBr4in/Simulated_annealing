@@ -3707,7 +3707,7 @@
 \draw (5cm,0cm)--(5cm,5cm)--(0cm,5cm)--(0cm,0cm)--(5cm,0cm)--cycle;
 \end{tikzpicture}
 \newpage
-\subsection{Recherche Tabu}
+\subsection{Recherche Tabou}
 %% ePiX-1.2.18
 %% 
 %%   Cartesian bounding box: [-1,6] x [-1,6]
