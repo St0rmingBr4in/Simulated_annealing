@@ -19,14 +19,14 @@ latexdrawing<N>::latexdrawing()
 template <>
 void latexdrawing<std::array<struct component_p, 36>>::draw(std::array<struct component_p, 36> components)
 {
-  picture(P(0,0), P(20,20), "15x15cm");
+  picture(P(-1,-1), P(6,6), "5x5cm");
 
   begin();
 
   // uncomment and permute these lines
   // crop_ellipse();
   // backing(Cyan());
-  //border(Black(), "1pt");
+  border(Black(), "1pt");
 
   font_size("tiny");
 
@@ -36,7 +36,9 @@ void latexdrawing<std::array<struct component_p, 36>>::draw(std::array<struct co
     std::ostringstream out;
     out << i;
 
-    label(P(2 * components[i].posx, components[i].posy * 2), out.str());
+    label(P(components[i].posx, components[i].posy), out.str());
+    for (auto j : components[i].neighbours)
+      arrow(P(components[i].posx, components[i].posy), P(components[j].posx, components[j].posy));
 
   }
 
