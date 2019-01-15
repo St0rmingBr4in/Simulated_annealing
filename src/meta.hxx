@@ -99,3 +99,59 @@ std::array<struct component_p, COMPONENTS_SIZE> tabu_search(std::array<struct co
 
   return sBest;
 }
+
+template<class N>
+void simulated_annealing(struct component components[], unsigned components_size, unsigned max_iteration, double temp, double temp_step, unsigned energy_target, N t)
+{
+  unsigned iter_total = 0;
+  unsigned iter_accept = 0;
+  int prev_dist = 50000;
+  unsigned energy = energy_target + 1;
+  unsigned delta_e = get_delta_e(components, components_size);
+
+  unsigned fixed = 0;
+  unsigned old_energy = energy_target;
+
+  while(iter_total < max_iteration && energy > energy_target)
+  {
+    energy = aggregated_comp_man_dist(components, components_size);
+    //printf("Iter total: %u, iter accept: %u, temp: %f, energy: %u\n", iter_total, iter_accept, temp, energy);
+    unsigned pos1 = rand() % components_size;
+    unsigned pos2 = rand() % components_size;
+
+    if(pos1 != pos2)
+    {
+      swap(&components[pos1], &components[pos2]);
+
+      int new_dist = aggregated_comp_man_dist(components, components_size);
+
+      if(new_dist > prev_dist || !proba(delta_e, temp))
+        swap(&components[pos1], &components[pos2]);
+      else
+      {
+        prev_dist = new_dist;
+        iter_accept++;
+        if (!(iter_accept % 15))
+          t.draw(components);
+        fixed = 0;
+      }
+
+      iter_total++;
+
+      if(iter_total >= 1000 * components_size && iter_accept >= 12 * components_size)
+      {
+        if(fixed == 0)
+          old_energy = energy;
+
+        if(energy == old_energy)
+          fixed++;
+
+        if(fixed == 3)
+          break;
+
+        temp -= temp_step;
+
+      }
+    }
+  }
+}

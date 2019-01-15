@@ -81,28 +81,47 @@ void fillAndShuffle(struct component components[])
 }
 
 
-int main()
+int main(int argc, char **argv)
 {
   srand(time(NULL));
   struct component components[36];
   fillAndShuffle(components);
 
-  auto test = arr_to_vec_component<36>(components);
+  if (argc == 1)
+  {
+    auto test = arr_to_vec_component<36>(components);
+    latexdrawing<struct component [36]> t;
+    t.draw(components);
 
-  latexdrawing<decltype(test)> t;
-  t.draw(test);
+    simulated_annealing(components, 36, 10000, 1, 0.01, 200, t);
 
-  // for (auto i : test)
-  // {
-  //   std::cout << "x: " << i.posx << ", y: " << i.posy << ", neigh: ";
-  //   for (int j : i.neighbours)
-  //   {
-  //     std::cout << j << ", ";
-  //   }
-  //   std::cout << std::endl;
-  // }
+    std::cout << "\\newpage" << std::endl;
+    std::cout << "\\subsection{Recherche Tabu}" << std::endl;
 
-  tabu_search<36, latexdrawing<decltype(test)>>(test, 10000, 10, t);
-  //simulated_annealing(components, 36, 7000, 1, 0.01, 200);
 
+    latexdrawing<decltype(test)> t2;
+    t2.draw(test);
+
+    tabu_search<36, latexdrawing<decltype(test)>>(test, 100000, 200, t2);
+  }
+  else if (std::string(argv[1]) == "simulated_annealing")
+  {
+    latexdrawing<struct component [36]> t;
+    t.draw(components);
+
+    simulated_annealing(components, 36, 10000, 1, 0.01, 200, t);
+  }
+  else if (std::string(argv[1]) == "tabu")
+  {
+    auto test = arr_to_vec_component<36>(components);
+
+    latexdrawing<decltype(test)> t;
+    t.draw(test);
+
+    tabu_search<36, latexdrawing<decltype(test)>>(test, 100000, 200, t);
+  }
+  else
+  {
+    return EXIT_FAILURE;
+  }
 }

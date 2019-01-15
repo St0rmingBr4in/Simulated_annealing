@@ -23,9 +23,6 @@ void latexdrawing<std::array<struct component_p, 36>>::draw(std::array<struct co
 
   begin();
 
-  // uncomment and permute these lines
-  // crop_ellipse();
-  // backing(Cyan());
   border(Black(), "1pt");
 
   font_size("tiny");
@@ -45,3 +42,28 @@ void latexdrawing<std::array<struct component_p, 36>>::draw(std::array<struct co
   end();
 }
 
+template <>
+void latexdrawing<struct component[36]>::draw(struct component components[36])
+{
+  picture(P(-1,-1), P(6,6), "5x5cm");
+
+  begin();
+
+  border(Black(), "1pt");
+
+  font_size("tiny");
+
+  for(unsigned i = 0; i < 36; i++)
+  {
+
+    std::ostringstream out;
+    out << i;
+
+    label(P(components[i].posx, components[i].posy), out.str());
+    for (unsigned j = 0; j < components[i].links_nb; j++)
+      arrow(P(components[i].posx, components[i].posy), P(components[i].components[j]->posx, components[i].components[j]->posy));
+
+  }
+
+  end();
+}
