@@ -1,3 +1,5 @@
 Need :
 	libsdl2
 	sdl2_ttf
+	epix
+	rubber
