@@ -10,7 +10,8 @@ LDFLAGS=-lSDL2 -lSDL2_ttf
 LDLIBS=-I/usr/include -L/usr/lib/epix -lm -lepix
 VPATH=src
 
-TEX_FILES=conclusion.tex glossaire.tex travail.tex docs.tex introduction.tex page_de_garde.tex annexes.tex generated.eepic
+GEN_TEX_FILES=simulated_annealing.eepic tabu.eepic
+TEX_FILES=conclusion.tex glossaire.tex travail.tex docs.tex introduction.tex page_de_garde.tex annexes.tex $(GEN_TEX_FILES)
 EXEC=simulated_annealing
 OBJS=simulated_annealing.o meta.o SDLdraw.o
 
@@ -21,8 +22,8 @@ view: $(PDF)
 
 main.pdf: $(foreach file,$(TEX_FILES),$(TEX_PATH)/$(file))
 
-$(TEX_PATH)/generated.eepic: $(EXEC)
-	./$(EXEC) > $(TEX_PATH)/generated.eepic
+%.eepic: $(EXEC)
+	./$(EXEC) $% > $@
 
 $(EXEC): $(OBJS)
 
