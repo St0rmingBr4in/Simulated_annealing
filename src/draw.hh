@@ -6,7 +6,8 @@
 #define SCREEN_HEIGHT 480
 #define SCREEN_WIDTH 640
 
-void sdlinit();
-void init_board();
-SDL_Rect camera();
-void draw(struct component components[]);
+template <class N>
+class drawing
+{
+  virtual void draw(N components) = 0;
+};

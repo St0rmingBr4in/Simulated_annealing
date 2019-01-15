@@ -5,13 +5,14 @@ TEX_PATH = tex
 VIEWER = zathura
 
 CC=g++
-CXXFLAGS=-O3 -Wall -Werror -pedantic -g -DEPIX_FMT_TIKZ
+CXXFLAGS=-O3 -Wall -Werror -pedantic -g -DEPIX_FMT_TIKZ $(shell sdl2-config --cflags)
+LDFLAGS=-lSDL2 -lSDL2_ttf
 LDLIBS=-I/usr/include -L/usr/lib/epix -lm -lepix
 VPATH=src
 
 TEX_FILES=conclusion.tex glossaire.tex presentation.tex travail.tex docs.tex introduction.tex page_de_garde.tex remerciements.tex annexes.tex generated.eepic
 EXEC=simulated_annealing
-OBJS=simulated_annealing.o meta.o
+OBJS=simulated_annealing.o meta.o SDLdraw.o
 
 all: $(PDF)
 

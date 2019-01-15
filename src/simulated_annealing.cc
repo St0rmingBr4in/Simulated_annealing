@@ -1,5 +1,5 @@
 #include "meta.hh"
-#include "draw.hh"
+#include "SDLdraw.hh"
 
 
 #include <stdlib.h>
@@ -97,25 +97,29 @@ int main()
   struct component components[36];
   fillAndShuffle(components);
 
-  simulated_annealing(components, 36, 7000, 1, 0.01, 200);
-
   auto test = arr_to_vec_component<36>(components);
 
-  for (auto i : test)
-  {
-    std::cout << "x: " << i.posx << ", y: " << i.posy << ", neigh: ";
-    for (int j : i.neighbours)
-    {
-      std::cout << j << ", ";
-    }
-    std::cout << std::endl;
-  }
+  SDLdrawing<decltype(test)> t;
+  t.draw(test);
 
-  tabu_search<36>(test, 10000);
+  // for (auto i : test)
+  // {
+  //   std::cout << "x: " << i.posx << ", y: " << i.posy << ", neigh: ";
+  //   for (int j : i.neighbours)
+  //   {
+  //     std::cout << j << ", ";
+  //   }
+  //   std::cout << std::endl;
+  // }
 
-  //draw(components);
+  tabu_search<36, SDLdrawing<decltype(test)>>(test, 10000, 100, t);
+  simulated_annealing(components, 36, 7000, 1, 0.01, 200);
+
 }
 
+
+
+/*
 void draw(struct component components[36])
 {
 
@@ -138,6 +142,8 @@ void draw(struct component components[36])
     }
   end();
   }
+
+  */
   /*
   picture(P(0,0),P(5,1), "5 x 1in");
 

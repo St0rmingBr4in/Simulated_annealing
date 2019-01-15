@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <array>
+#include "draw.hh"
 
 struct component
 {
@@ -25,8 +26,8 @@ struct component_p
 template <unsigned int COMPONENTS_SIZE>
 std::array<struct component_p, COMPONENTS_SIZE> arr_to_vec_component(struct component components[]);
 
-template <unsigned int COMPONENTS_SIZE>
-std::array<struct component_p, COMPONENTS_SIZE> tabu_search(std::array<struct component_p, COMPONENTS_SIZE> components, unsigned max_tabu_size);
+template <unsigned int COMPONENTS_SIZE, class DRAW>
+std::array<struct component_p, COMPONENTS_SIZE> tabu_search(std::array<struct component_p, COMPONENTS_SIZE> components, unsigned max_tabu_size, unsigned max_iter, DRAW t);
 
 void swap(struct component_p* cmpt1, struct component_p* cmpt2);
 

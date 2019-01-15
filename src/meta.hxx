@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cassert>
 #include "meta.hh"
+#include "draw.hh"
 
 template <unsigned int COMPONENTS_SIZE>
 unsigned comp_man_dist(std::array<struct component_p, COMPONENTS_SIZE> cmpt, unsigned index)
@@ -47,14 +48,15 @@ std::array<struct component_p, COMPONENTS_SIZE> arr_to_vec_component(struct comp
   return res;
 }
 
-template <unsigned int COMPONENTS_SIZE>
-std::array<struct component_p, COMPONENTS_SIZE> tabu_search(std::array<struct component_p, COMPONENTS_SIZE> components, unsigned max_tabu_size)
+template <unsigned int COMPONENTS_SIZE, class DRAW>
+std::array<struct component_p, COMPONENTS_SIZE> tabu_search(std::array<struct component_p, COMPONENTS_SIZE> components, unsigned max_tabu_size, unsigned max_iter, DRAW t)
 {
   auto sBest = components;
   std::deque<std::array<struct component_p, COMPONENTS_SIZE>> tabuList;
   tabuList.push_back(sBest);
+  unsigned iter = 0;
 
-  while (true)
+  while (iter++ < max_iter)
   {
     int old_dist = aggregated_comp_man_dist<COMPONENTS_SIZE>(components);
     for (unsigned pos1 = 0; pos1 < COMPONENTS_SIZE; pos1++)
@@ -64,19 +66,33 @@ std::array<struct component_p, COMPONENTS_SIZE> tabu_search(std::array<struct co
           continue;
 
         swap(&components[pos1], &components[pos2]);
+        //std::cout << "swapping position : " << pos1 << ", " << pos2 << std::endl;
 
         int aggregated_dist = aggregated_comp_man_dist<COMPONENTS_SIZE>(components);
 
+        //std::cout << "Best dist: " << old_dist << ", New dist: " << aggregated_dist << std::endl;
+
         if (std::find(tabuList.begin(), tabuList.end(), components) != tabuList.end() // In Tabu list
             || aggregated_dist > old_dist)
+        {
           swap(&components[pos1], &components[pos2]); // Rollback
+        }
         else
+        {
           old_dist = aggregated_dist;
+          std::cout << "Found temp better solution" << std::endl;
+          t.draw(components);
+        }
       }
 
     if (old_dist < aggregated_comp_man_dist<COMPONENTS_SIZE>(sBest))
+    {
       sBest = components;
+      std::cout << "Found better solution" << std::endl;
+      t.draw(components);
+    }
     tabuList.push_back(components);
+    std::cout << "tabuList size: " << tabuList.size() << std::endl;
     if (tabuList.size() > max_tabu_size)
       tabuList.pop_front();
   }
