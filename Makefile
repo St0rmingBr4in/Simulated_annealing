@@ -10,7 +10,7 @@ LDFLAGS=-lSDL2 -lSDL2_ttf
 LDLIBS=-I/usr/include -L/usr/lib/epix -lm -lepix
 VPATH=src
 
-TEX_FILES=conclusion.tex glossaire.tex presentation.tex travail.tex docs.tex introduction.tex page_de_garde.tex remerciements.tex annexes.tex generated.eepic
+TEX_FILES=conclusion.tex glossaire.tex travail.tex docs.tex introduction.tex page_de_garde.tex annexes.tex generated.eepic
 EXEC=simulated_annealing
 OBJS=simulated_annealing.o meta.o SDLdraw.o
 
@@ -26,11 +26,11 @@ $(TEX_PATH)/generated.eepic: $(EXEC)
 
 $(EXEC): $(OBJS)
 
-#%.pdf: $(TEX_PATH)/%.tex
-#	rubber -d $<
+%.pdf: $(TEX_PATH)/%.tex
+	rubber -d $<
 
-%.pdf: tex/%.tex
-	$(TEX) $< -o $@
+#%.pdf: tex/%.tex
+#	$(TEX) $< -o $@
 
 compress: $(PDF)
 	$(GS)"compressed-$(PDF)" $(PDF)
