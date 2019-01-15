@@ -99,7 +99,21 @@ int main()
 
   simulated_annealing(components, 36, 7000, 1, 0.01, 200);
 
-  draw(components);
+  auto test = arr_to_vec_component<36>(components);
+
+  for (auto i : test)
+  {
+    std::cout << "x: " << i.posx << ", y: " << i.posy << ", neigh: ";
+    for (int j : i.neighbours)
+    {
+      std::cout << j << ", ";
+    }
+    std::cout << std::endl;
+  }
+
+  tabu_search<36>(test, 10000);
+
+  //draw(components);
 }
 
 void draw(struct component components[36])
@@ -120,7 +134,7 @@ void draw(struct component components[36])
     {
       std::ostringstream out;  
       out << i << "," << j;
-      label(P(2 * i,2 * j), out.str());
+      label(P(2 * i, 2 * j), out.str());
     }
   end();
   }

@@ -5,7 +5,7 @@ TEX_PATH = tex
 VIEWER = zathura
 
 CC=g++
-CXXFLAGS=-O3 -Wall -Werror -pedantic -g -fpermissive -DEPIX_FMT_TIKZ
+CXXFLAGS=-O3 -Wall -Werror -pedantic -g -DEPIX_FMT_TIKZ
 LDLIBS=-I/usr/include -L/usr/lib/epix -lm -lepix
 VPATH=src
 

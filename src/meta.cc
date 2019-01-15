@@ -1,5 +1,11 @@
 #include <cstdlib>
+#include <deque>
+#include <array>
+#include <vector>
+#include <algorithm>
+#include <iterator>
 #include <SDL2/SDL.h>
+#include <cassert>
 
 #include "draw.hh"
 #include "meta.hh"
@@ -13,12 +19,28 @@ unsigned comp_man_dist(struct component cmpt)
 {
   unsigned ret = 0;
   for(unsigned i = 0; i < cmpt.links_nb; i++)
+  {
+    assert(cmpt.components[i]);
     // printf("i: %u, x: %u, y: %u, x: %u, y: %u\n", i, cmpt.posx, cmpt.posy, cmpt.components[i]->posx, cmpt.components[i]->posy);
     ret += manahtan_dist(cmpt.posx, cmpt.posy, cmpt.components[i]->posx, cmpt.components[i]->posy);
+  }
   return ret;
 }
 
 void swap(struct component* cmpt1, struct component* cmpt2)
+{
+  if(cmpt1 == cmpt2)
+    return;
+
+  unsigned tmp = cmpt1->posx;
+  cmpt1->posx = cmpt2->posx;
+  cmpt2->posx = tmp;
+  tmp = cmpt1->posy;
+  cmpt1->posy = cmpt2->posy;
+  cmpt2->posy = tmp;
+}
+
+void swap(struct component_p* cmpt1, struct component_p* cmpt2)
 {
   if(cmpt1 == cmpt2)
     return;
