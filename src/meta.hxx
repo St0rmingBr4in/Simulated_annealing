@@ -80,23 +80,22 @@ std::array<struct component_p, COMPONENTS_SIZE> tabu_search(std::array<struct co
         else
         {
           old_dist = aggregated_dist;
-          std::cout << "Found temp better solution" << std::endl;
-          t.draw(components);
+          //std::cout << "Found temp better solution" << std::endl;
+          //t.draw(components);
         }
       }
 
     if (old_dist < aggregated_comp_man_dist<COMPONENTS_SIZE>(sBest))
     {
       sBest = components;
-      std::cout << "Found better solution" << std::endl;
+      //std::cout << "Found better solution" << std::endl;
       t.draw(components);
     }
     tabuList.push_back(components);
-    std::cout << "tabuList size: " << tabuList.size() << std::endl;
+    //std::cout << "tabuList size: " << tabuList.size() << std::endl;
     if (tabuList.size() > max_tabu_size)
       tabuList.pop_front();
   }
 
   return sBest;
 }
-

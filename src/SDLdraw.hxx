@@ -99,28 +99,31 @@ void SDLdrawing<std::array<struct component_p, 36>>::draw(std::array<struct comp
     blocs[i].x = components[i].posx * (SCREEN_HEIGHT/6);
     blocs[i].y = components[i].posy * (SCREEN_HEIGHT/6);
     SDL_RenderFillRect(renderer, &blocs[i]);
+
+
     sprintf( str,"%u", i);
     SDL_Surface* text_surf = TTF_RenderText_Solid(fantasq, str, Black);
     SDL_Texture* msg = SDL_CreateTextureFromSurface(renderer, text_surf);
     SDL_FreeSurface(text_surf);
+
     SDL_Rect msg_rect;
     msg_rect.x = components[i].posx * (SCREEN_HEIGHT/6);
     msg_rect.y = components[i].posy * (SCREEN_HEIGHT/6);
     msg_rect.w = SCREEN_HEIGHT/6 - 10;
     msg_rect.h = SCREEN_HEIGHT/6 - 10;
+
     SDL_RenderCopy(renderer, msg, NULL, &msg_rect);
-    if(i % 2)
-      for(auto j : components[i].neighbours)
-      {
-        SDL_SetRenderDrawColor(renderer, 0, rand() % 255, rand() % 255, rand() % 255);
-        SDL_RenderDrawLine(renderer, blocs[i].x + (blocs[i].w / 2),
-                           blocs[i].y + (blocs[i].h /2),
-                           (components[j].posx * (SCREEN_HEIGHT/6)) + (blocs[i].w / 2),
-                           (components[j].posy * (SCREEN_HEIGHT/6)) + (blocs[i].h /2));
-      }
+
+    for(auto j : components[i].neighbours)
+    {
+      SDL_SetRenderDrawColor(renderer, 0, rand() % 255, rand() % 255, rand() % 255);
+      SDL_RenderDrawLine(renderer, blocs[i].x + (blocs[i].w / 2),
+                         blocs[i].y + (blocs[i].h /2),
+                         (components[j].posx * (SCREEN_HEIGHT/6)) + (blocs[i].w / 2),
+                         (components[j].posy * (SCREEN_HEIGHT/6)) + (blocs[i].h /2));
+    }
   }
   SDL_SetRenderTarget(renderer, get_rendertarget());
   SDL_RenderPresent(renderer);
-  SDL_Delay(1000);
 }
 

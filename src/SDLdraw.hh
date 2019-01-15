@@ -15,10 +15,4 @@ class SDLdrawing : public drawing<N>
   void draw(N) override;
 };
 
-template <class N>
-class latexdrawing : public drawing<N>
-{
-  void draw(N) override;
-};
-
 #include "SDLdraw.hxx"
